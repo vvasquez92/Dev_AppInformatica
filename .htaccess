@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{SERVER_PORT} !=443
+RewriteCond %{HTTP_HOST} ^(www\.)?fabrimetalsa\.cl$ [NC]
+RewriteRule ^$ https://www.fabrimetalsa.cl%{REQUEST_URI} [R,L]
