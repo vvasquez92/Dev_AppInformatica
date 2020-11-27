@@ -8,23 +8,24 @@ function init() {
     mostarform(false);
     listar();
 
+
     $('[data-toggle="tooltip"]').tooltip();
 
-    $("#formulario").on("submit", function (e) {
+    $("#formulario").on("submit", function(e) {
         guardaryeditar(e);
     });
 
-    $.post("../ajax/computador.php?op=selectcomputador", function (r) {
+    $.post("../ajax/computador.php?op=selectcomputador", function(r) {
         $("#idcomputador").html(r);
         $("#idcomputador").selectpicker('refresh');
     });
 
-    $.post("../ajax/empleado.php?op=selectempleado", function (r) {
+    $.post("../ajax/empleado.php?op=selectempleado", function(r) {
         $("#idempleado").html(r);
         $("#idempleado").selectpicker('refresh');
     });
 
-    $("#ip").focusout(function () {
+    $("#ip").focusout(function() {
 
         if ($.trim($("#ip").val()).length > 0) {
 
@@ -36,9 +37,8 @@ function init() {
 
                 if (res[0] <= 255 && res[1] <= 255 && res[2] <= 255 && res[3] <= 255) {
 
-                    $.post("../ajax/asigcomputador.php?op=validarIpRegistrada",
-                        { "idasigcompu": $("#idasigcompu").val(), "ip": $("#ip").val() },
-                        function (data) {
+                    $.post("../ajax/asigcomputador.php?op=validarIpRegistrada", { "idasigcompu": $("#idasigcompu").val(), "ip": $("#ip").val() },
+                        function(data) {
 
                             if (parseInt(data.cantidad) == 0) {
 
@@ -149,16 +149,18 @@ function listar() {
             url: '../ajax/asigcomputador.php?op=listar',
             type: "get",
             dataType: "json",
-            error: function (e) {
+            error: function(e) {
                 console.log(e.responseText);
             }
         },
         "language": {
-			"url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
-		  },
+            "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+        },
         "bDestroy": true,
         "iDisplayLength": 10, //Paginacion 10 items
-        "order": [[1, "desc"]] //Ordenar en base a la columna 0 descendente
+        "order": [
+                [1, "desc"]
+            ] //Ordenar en base a la columna 0 descendente
     }).DataTable();
 }
 
@@ -173,7 +175,7 @@ function guardaryeditar(e) {
         contentType: false,
         processData: false,
 
-        success: function (datos) {
+        success: function(datos) {
             bootbox.alert(datos);
             mostarform(false);
             tabla.ajax.reload();
@@ -183,7 +185,7 @@ function guardaryeditar(e) {
 }
 
 function mostar(idasigcomputador) {
-    $.post("../ajax/asigcomputador.php?op=mostar", { idasigcomputador: idasigcomputador }, function (data, status) {
+    $.post("../ajax/asigcomputador.php?op=mostar", { idasigcomputador: idasigcomputador }, function(data, status) {
         data = JSON.parse(data);
         mostarform(true);
         $("#idasigcompu").val(data.idasigcomputador);
@@ -200,13 +202,12 @@ function mostar(idasigcomputador) {
 
 function desactivar(idasigcomputador, idcomputador) {
 
-    bootbox.confirm("Esta seguro que quiere inhabilitar la asignacion?", function (result) {
+    bootbox.confirm("Esta seguro que quiere inhabilitar la asignacion?", function(result) {
         if (result) {
             bootbox.prompt({
                 title: "Seleccione el motivo de la devolución",
                 inputType: 'select',
-                inputOptions: [
-                    {
+                inputOptions: [{
                         text: '<--SELECCIONE-->',
                         value: '',
                     },
@@ -223,10 +224,10 @@ function desactivar(idasigcomputador, idcomputador) {
                         value: '3',
                     }
                 ],
-                callback: function (result) {
+                callback: function(result) {
                     if (result !== null) {
                         if (result != "") {
-                            $.post("../ajax/asigcomputador.php?op=desactivar", { idasigcompu: idasigcomputador, idcomputador: idcomputador, condicion: result }, function (e) {
+                            $.post("../ajax/asigcomputador.php?op=desactivar", { idasigcompu: idasigcomputador, idcomputador: idcomputador, condicion: result }, function(e) {
                                 bootbox.alert(e);
                                 tabla.ajax.reload();
                             });
@@ -248,9 +249,9 @@ function desactivar(idasigcomputador, idcomputador) {
 
 function checkcontrato(idasigcomputador) {
 
-    bootbox.confirm("Esta seguro que quiere marcar el contrato como entregado?", function (result) {
+    bootbox.confirm("Esta seguro que quiere marcar el contrato como entregado?", function(result) {
         if (result) {
-            $.post("../ajax/asigcomputador.php?op=checkcontrato", { idasigcomputador: idasigcomputador }, function (e) {
+            $.post("../ajax/asigcomputador.php?op=checkcontrato", { idasigcomputador: idasigcomputador }, function(e) {
                 bootbox.alert(e);
                 tabla.ajax.reload();
             });
@@ -260,9 +261,9 @@ function checkcontrato(idasigcomputador) {
 
 function checkacta(idasigcomputador) {
 
-    bootbox.confirm("Esta seguro que quiere marcar el acta de entrega como entregada?", function (result) {
+    bootbox.confirm("Esta seguro que quiere marcar el acta de entrega como entregada?", function(result) {
         if (result) {
-            $.post("../ajax/asigcomputador.php?op=checkacta", { idasigcompu: idasigcomputador }, function (e) {
+            $.post("../ajax/asigcomputador.php?op=checkacta", { idasigcompu: idasigcomputador }, function(e) {
                 bootbox.alert(e);
                 tabla.ajax.reload();
             })
@@ -272,9 +273,9 @@ function checkacta(idasigcomputador) {
 
 function checkdev(idasigcomputador) {
 
-    bootbox.confirm("Esta seguro que quiere marcar el acta de devolucion como entregada?", function (result) {
+    bootbox.confirm("Esta seguro que quiere marcar el acta de devolucion como entregada?", function(result) {
         if (result) {
-            $.post("../ajax/asigcomputador.php?op=checkdevolucion", { idasigcompu: idasigcomputador }, function (e) {
+            $.post("../ajax/asigcomputador.php?op=checkdevolucion", { idasigcompu: idasigcomputador }, function(e) {
                 bootbox.alert(e);
                 tabla.ajax.reload();
             });
@@ -284,7 +285,7 @@ function checkdev(idasigcomputador) {
 
 function acta(idasigcomputador) {
 
-    $.post("../ajax/asigcomputador.php?op=pdfacta", { idasigcompu: idasigcomputador }, function (data, status) {
+    $.post("../ajax/asigcomputador.php?op=pdfacta", { idasigcompu: idasigcomputador }, function(data, status) {
         data = JSON.parse(data);
         tabla.ajax.reload();
 
@@ -502,13 +503,13 @@ function devolucion(idasigcompu) {
         title: "Motivo de la Devolución",
         inputType: 'textarea',
         className: 'bootbox-custom-class',
-        callback: function (result) {
+        callback: function(result) {
 
             if (result !== null) {
 
                 if (result.length > 0) {
 
-                    $.post("../ajax/asigcomputador.php?op=pdfdev", { "idasigcompu": idasigcompu, "detalle": result }, function (data, status) {
+                    $.post("../ajax/asigcomputador.php?op=pdfdev", { "idasigcompu": idasigcompu, "detalle": result }, function(data, status) {
                         data = JSON.parse(data);
                         tabla.ajax.reload();
 
@@ -682,8 +683,7 @@ function devolucion(idasigcompu) {
                         doc.setFontType('normal');
                         if (data.precio == null) {
                             doc.text(startX + 100, startY, '$ ');
-                        }
-                        else {
+                        } else {
                             doc.text(startX + 100, startY, '$ ' + data.precio);
                         }
 
@@ -727,7 +727,7 @@ function devolucion(idasigcompu) {
                 }
             }
         }
-    }).on("shown.bs.modal", function (event) {
+    }).on("shown.bs.modal", function(event) {
         $('.bootbox-custom-class').find('.bootbox-input').css("text-transform", "uppercase");
     });
 }
