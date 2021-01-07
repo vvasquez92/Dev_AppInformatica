@@ -263,7 +263,7 @@ require "../config/conexion.php";
 
                 public function listaDatosVehiculo($idvehiculo){
                     $sql = "SELECT mav.nombre marca, mov.nombre modelo, v.patente
-                            FROM afabrimetalsa_informatica.vehiculo v
+                            FROM vehiculo v
                             INNER JOIN marcave mav ON v.idmarca = mav.idmarca
                             INNER JOIN modelove mov ON v.idmodelo = mov.idmodelove
                             WHERE v.idvehiculo = $idvehiculo;";

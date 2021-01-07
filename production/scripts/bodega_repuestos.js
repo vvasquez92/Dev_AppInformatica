@@ -559,54 +559,78 @@ function agregarNroSerie() {
         bootbox.alert("Ya fueron agregados todos los números de serie");
     } else {
 
-        var boton = '<button class="btn btn-danger btn-xs" data-toggle="tooltip" title="Quitar" onclick="quitarNroSerie(' + $("#NewNroSerie").val() + ')"><i class="fa fa-times-circle"></i></button>';
-        var ns = $("#NewNroSerie").val();
-        var existe = 0;
-        var idRep = $('#id_repuesto').val();
+        if ($('#id_repuesto').val() == "") {
 
-        $.post("../ajax/bodega_repuestos.php?op=validaNroSerie", { nro_serie: ns, idRpuesto: idRep }, function(data) {
-            data = JSON.parse(data);
-            if (data == 0) {
-                $('#tblNroSerie').DataTable().rows().data().each(function(value) {
+            var boton = '<button class="btn btn-danger btn-xs" data-toggle="tooltip" title="Quitar" onclick="quitarNroSerie(' + $("#NewNroSerie").val() + ')"><i class="fa fa-times-circle"></i></button>';
+            var ns = $("#NewNroSerie").val();
 
-                    var a = value[1];
-                    if (a === ns && existe === 0) {
-                        bootbox.alert("Este número de serie ya fue agregado");
-                        existe = 1;
-                    } else {
-                        cantActual = cantActual + 1;
+            cantActual = cantActual + 1;
 
-                        $("#lblCan").html('Números agregados: ' + cantActual + ' de ' + cantTotal);
+            $("#lblCan").html('Números agregados: ' + cantActual + ' de ' + cantTotal);
 
-                        dataSet.push([boton, ns]);
+            dataSet.push([boton, ns]);
 
-                        $('#tblNroSerie').DataTable({
-                            destroy: true,
-                            data: dataSet,
-                            columns: [
-                                { title: "" },
-                                { title: "Números de serie agregados" }
-                            ],
-                            "bFilter": false,
-                            "lengthChange": false,
-                            "iDisplayLength": 10
-                        });
+            $('#tblNroSerie').DataTable({
+                destroy: true,
+                data: dataSet,
+                columns: [
+                    { title: "" },
+                    { title: "Números de serie agregados" }
+                ],
+                "bFilter": false,
+                "lengthChange": false,
+                "iDisplayLength": 10
+            });
 
-                        $("#NewNroSerie").val("");
-                    }
-                });
-            } else {
-                // si existe codigo
-                existe = 1;
-                $("#NewNroSerie").trigger("focus");
+            $("#NewNroSerie").val("");
+        } else {
+            var boton = '<button class="btn btn-danger btn-xs" data-toggle="tooltip" title="Quitar" onclick="quitarNroSerie(' + $("#NewNroSerie").val() + ')"><i class="fa fa-times-circle"></i></button>';
+            var ns = $("#NewNroSerie").val();
+            var existe = 0;
+            var idRep = $('#id_repuesto').val();
 
-                bootbox.alert("Este número de serie ya fue agregado con otra factura");
+            $.post("../ajax/bodega_repuestos.php?op=validaNroSerie", { nro_serie: ns, idRpuesto: idRep }, function(data) {
+                data = JSON.parse(data);
+                if (data == 0) {
+                    $('#tblNroSerie').DataTable().rows().data().each(function(value) {
+                        var a = value[1];
+                        //console.log(value[1]);
+                        //console.log(ns);
+                        if (a === ns && existe === 0) {
+                            bootbox.alert("Este número de serie ya fue agregado");
+                            existe = 1;
+                        } else {
+                            cantActual = cantActual + 1;
 
-            }
-        });
+                            $("#lblCan").html('Números agregados: ' + cantActual + ' de ' + cantTotal);
 
+                            dataSet.push([boton, ns]);
 
+                            $('#tblNroSerie').DataTable({
+                                destroy: true,
+                                data: dataSet,
+                                columns: [
+                                    { title: "" },
+                                    { title: "Números de serie agregados" }
+                                ],
+                                "bFilter": false,
+                                "lengthChange": false,
+                                "iDisplayLength": 10
+                            });
 
+                            $("#NewNroSerie").val("");
+                        }
+                    });
+                } else {
+                    // si existe codigo
+                    existe = 1;
+                    $("#NewNroSerie").trigger("focus");
+
+                    bootbox.alert("Este número de serie ya fue agregado con otra factura");
+
+                }
+            });
+        }
 
     }
 

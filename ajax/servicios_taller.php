@@ -75,7 +75,7 @@ switch ($_GET['op']) {
         $rspta = $ServiciosTaller->cargaRepXCat();        
 
         while($reg = $rspta->fetch_object()){
-            echo '<option value='.$reg->id_repuesto.'>'.$reg->nombre. ' '.$reg->marca. ' '. $reg->modelo. ' - '. $reg->nro_serie. '</option>';
+            echo '<option value='.$reg->idRepuestoNumero.'>'.$reg->nombre. ' '.$reg->marca. ' '. $reg->modelo. ' - '. $reg->nro_serie. '</option>';
         }
     break;
 

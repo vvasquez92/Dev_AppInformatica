@@ -78,10 +78,11 @@ require "../config/conexion.php";
         }
 
         public function cargaRepXCat(){        
-            $sql="SELECT r.id_repuesto, r.nombre, r.modelo, mr.descripcion marca, rn.nro_serie
+            $sql="SELECT r.id_repuesto, r.nombre, r.modelo, mr.descripcion marca, rn.nro_serie, rn.idRepuestoNumero
                     FROM repuesto r
                     INNER JOIN marca_rep mr ON r.id_marca = mr.id_marca
                     INNER JOIN repuestos_numeros rn ON r.id_repuesto = rn.id_repuesto
+                    WHERE rn.disponible = 1
                     ORDER BY 2, 4, 3, 5 ASC;";                    
             return ejecutarConsulta($sql);   
                 
